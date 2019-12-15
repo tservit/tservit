@@ -1,13 +1,14 @@
 {
-  "include": ["src", "types", "test"],
+  "include": ["src", "types", "packages/core/src/test"],
   "compilerOptions": {
     "target": "es5",
-    "module": "esnext",
-    "lib": ["dom", "esnext"],
+    "module": "commonjs",
+    "lib": ["esnext"],
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
-    "rootDir": "./",
+    "rootDir": "./src",
+    "outDir": "./lib",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
