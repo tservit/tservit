@@ -30,5 +30,6 @@
     "express": "^4.17.1",
     "fp-ts": "^2.3.1",
     "lodash": "^4.17.15"
-  }
+  },
+  "gitHead": "f9492dfd4ef672bcb967c62e4a111bb563ef9700"
 }
