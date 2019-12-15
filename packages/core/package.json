@@ -31,5 +31,8 @@
     "fp-ts": "^2.3.1",
     "lodash": "^4.17.15"
   },
-  "gitHead": "f9492dfd4ef672bcb967c62e4a111bb563ef9700"
+  "gitHead": "36e1732e14e463b478ff2f651d264087a9ad70ee",
+   "publishConfig": {
+    "access": "public"
+  }
 }
