@@ -6,7 +6,7 @@ import {
     bimap,
     map,
 } from "fp-ts/lib/TaskEither";
-import { ProcessedPath, path } from "./path";
+import { path } from "./path";
 
 type HttpError = { _type: "err" };
 type HttpResult = { _type: "res" };
@@ -44,33 +44,39 @@ const runMiddleware = <T extends {}, U extends T>(
 function createHandler(
     router: ReturnType<typeof express>
 ): <P extends string>(
-    path: ProcessedPath<P>
+    pathParts: TemplateStringsArray,
+    ...params: P[]
 ) => <T extends {}, U extends {}, V extends {}>(
     middleware: [Middleware<T, U>, Middleware<U, V>]
 ) => (handle: Handler<U & V, P>) => void;
 function createHandler(
     router: ReturnType<typeof express>
 ): <P extends string>(
-    path: ProcessedPath<P>
+    pathParts: TemplateStringsArray,
+    ...params: P[]
 ) => <T extends BaseCtx, U extends T>(
     middleware: [Middleware<T, U>]
 ) => (handle: Handler<U, P>) => void;
 function createHandler(router: ReturnType<typeof express>) {
-    return <P extends string>({ path }: ProcessedPath<P>) => (
-        middleware: any
-    ) => (handle: Handler<any, any>) => {
-        router.get(path, (request, res) => {
-            bimap<HttpError, void, HttpResult, void>(
-                err => res.status(500).send(err),
-                r => res.status(200).send(r)
-            )(
-                chain(handle)(
-                    runMiddleware(middleware)({
-                        request,
-                    })
-                )
-            )();
-        });
+    return <P extends string>(
+        pathParts: TemplateStringsArray,
+        ...params: P[]
+    ) => (middleware: any) => (handle: Handler<any, any>) => {
+        router.get(
+            path(pathParts, ...params).path,
+            (request, res) => {
+                bimap<HttpError, void, HttpResult, void>(
+                    err => res.status(500).send(err),
+                    r => res.status(200).send(r)
+                )(
+                    chain(handle)(
+                        runMiddleware(middleware)({
+                            request,
+                        })
+                    )
+                )();
+            }
+        );
     };
 }
 
@@ -96,7 +102,7 @@ const m2: Middleware<
     return right({ goodbye: "alex" });
 };
 
-app.get(path`/${"name"}`)([m1, m2])(
+app.get`/${"name"}`([m1, m2])(
     ({ hello, goodbye, params: { name } }) => {
         return right({
             _type: "res",
