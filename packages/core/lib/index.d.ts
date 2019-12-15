@@ -3,12 +3,9 @@ import { Request } from "express";
 import { TaskEither } from "fp-ts/lib/TaskEither";
 export declare type HttpError = {
     code: number;
-    msg: string;
+    body: any;
 };
-export declare type HttpResult = {
-    code: number;
-    body: object;
-};
+export declare type HttpResult = object;
 export declare type Handler<T extends {}, P extends string> = (ctx: T & {
     params: Record<P, string>;
 }) => TaskEither<HttpError, HttpResult>;

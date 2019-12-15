@@ -8,8 +8,8 @@ import {
 } from "fp-ts/lib/TaskEither";
 import { path } from "./path";
 
-export type HttpError = { code: number; msg: string };
-export type HttpResult = { code: number; body: object };
+export type HttpError = { code: number; body: any };
+export type HttpResult = object;
 export type Handler<T extends {}, P extends string> = (
     ctx: T & { params: Record<P, string> }
 ) => TaskEither<HttpError, HttpResult>;
@@ -61,8 +61,8 @@ function createHandler(router: ReturnType<typeof express>) {
             path(pathParts, ...params).path,
             (request, res) => {
                 bimap<HttpError, void, HttpResult, void>(
-                    err => res.status(500).send(err),
-                    ({ code, body }) => res.status(code).send(body)
+                    ({ code, body }) => res.status(code).send(body),
+                    body => res.status(200).send(body)
                 )(
                     chain(handle)(
                         runMiddleware(middleware)({
