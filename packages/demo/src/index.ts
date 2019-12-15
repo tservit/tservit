@@ -1,5 +1,5 @@
-import { createServer } from "@tserver/core";
-import { body } from "@tserver/middleware-body";
+import { createServer } from "@tservit/core";
+import { body } from "@tservit/middleware-body";
 import { right } from "fp-ts/lib/TaskEither";
 import * as t from "io-ts";
 

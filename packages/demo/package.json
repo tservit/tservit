@@ -1,5 +1,5 @@
 {
-    "name": "@tserver/demo",
+    "name": "@tservit/demo",
     "version": "0.1.0",
     "license": "MIT",
     "author": "Alex Young",
@@ -28,8 +28,8 @@
     },
     "dependencies": {
       "express": "^4.17.1",
-      "@tserver/core": "^0",
-      "@tserver/middleware-body": "^0",
+      "@tservit/core": "^0",
+      "@tservit/middleware-body": "^0",
       "io-ts": "^2.0.1",
       "fp-ts": "^2.3.1"
     }

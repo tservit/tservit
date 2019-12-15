@@ -1,4 +1,4 @@
-import { Middleware, HttpError } from "@tserver/core";
+import { Middleware, HttpError } from "@tservit/core";
 import {
     taskify,
     bimap,
