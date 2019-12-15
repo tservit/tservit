@@ -4,22 +4,31 @@ import {
     TaskEither,
     right,
     bimap,
-    map,
+    map
 } from "fp-ts/lib/TaskEither";
 import { path } from "./path";
 
-type HttpError = { _type: "err" };
-type HttpResult = { _type: "res" };
-type Handler<T extends {}, P extends string> = (
+export type HttpError = { code: number; msg: string };
+export type HttpResult = { code: number; body: object };
+export type Handler<T extends {}, P extends string> = (
     ctx: T & { params: Record<P, string> }
 ) => TaskEither<HttpError, HttpResult>;
-type Middleware<T extends {}, U extends {}> = (
+export type Middleware<T extends {}, U extends {}> = (
     ctx: BaseCtx
 ) => (prev: T) => TaskEither<HttpError, U>;
 
-type BaseCtx = {
+export type BaseCtx = {
     request: Request;
 };
+
+enum Verbs {
+    get = "get",
+    put = "put",
+    post = "post",
+    patch = "patch",
+    delete = "delete",
+    options = "options"
+}
 
 const combineTEither = <T extends object>(
     t1: TaskEither<HttpError, T>
@@ -43,35 +52,39 @@ const runMiddleware = <T extends {}, U extends T>(
 
 function createHandler(
     router: ReturnType<typeof express>
-): <P extends string>(
+): (
+    verb: Verbs
+) => <P extends string>(
+    pathParts: TemplateStringsArray,
+    ...params: P[]
+) => <T extends {}, U extends T>(
+    middleware: [Middleware<T, U>]
+) => (handle: Handler<U, P>) => void;
+function createHandler(
+    router: ReturnType<typeof express>
+): (
+    verb: Verbs
+) => <P extends string>(
     pathParts: TemplateStringsArray,
     ...params: P[]
 ) => <T extends {}, U extends {}, V extends {}>(
     middleware: [Middleware<T, U>, Middleware<U, V>]
 ) => (handle: Handler<U & V, P>) => void;
-function createHandler(
-    router: ReturnType<typeof express>
-): <P extends string>(
-    pathParts: TemplateStringsArray,
-    ...params: P[]
-) => <T extends BaseCtx, U extends T>(
-    middleware: [Middleware<T, U>]
-) => (handle: Handler<U, P>) => void;
 function createHandler(router: ReturnType<typeof express>) {
-    return <P extends string>(
+    return (verb: Verbs) => <P extends string>(
         pathParts: TemplateStringsArray,
         ...params: P[]
     ) => (middleware: any) => (handle: Handler<any, any>) => {
-        router.get(
+        router[verb](
             path(pathParts, ...params).path,
             (request, res) => {
                 bimap<HttpError, void, HttpResult, void>(
                     err => res.status(500).send(err),
-                    r => res.status(200).send(r)
+                    ({ code, body }) => res.status(code).send(body)
                 )(
                     chain(handle)(
                         runMiddleware(middleware)({
-                            request,
+                            request
                         })
                     )
                 )();
@@ -81,36 +94,23 @@ function createHandler(router: ReturnType<typeof express>) {
 }
 
 const createRoute = (router: ReturnType<typeof express>) => {
+    const handlerFactory = createHandler(router);
     return {
         listen: router.listen.bind(router),
-        get: createHandler(router),
+        use: router.use.bind(router),
+        delete: handlerFactory(Verbs.delete),
+        get: handlerFactory(Verbs.get),
+        options: handlerFactory(Verbs.options),
+        patch: handlerFactory(Verbs.patch),
+        post: handlerFactory(Verbs.post),
+        put: handlerFactory(Verbs.put),
+        attach: ({
+            _router
+        }: {
+            _router: ReturnType<typeof express>;
+        }) => router.use(_router),
+        _router: router
     };
 };
 
-export const createServer = () => createRoute(express());
-
-const app = createServer();
-
-const m1: Middleware<{}, { hello: string }> = () => () => {
-    return right({ hello: "alex" });
-};
-
-const m2: Middleware<
-    { hello: string },
-    { goodbye: string }
-> = () => () => {
-    return right({ goodbye: "alex" });
-};
-
-app.get`/${"name"}`([m1, m2])(
-    ({ hello, goodbye, params: { name } }) => {
-        return right({
-            _type: "res",
-            hello,
-            goodbye,
-            name,
-        });
-    }
-);
-
-app.listen(3500, console.log);
+export const createServer = (ex = express()) => createRoute(ex);
