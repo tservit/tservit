@@ -21,10 +21,13 @@
     "url": "git+https://github.com/tservit/tservit.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "build": "tsc"
   },
   "bugs": {
     "url": "https://github.com/tservit/tservit/issues"
+  },
+  "devDependencies": {
+    "typescript": "^3.7.3"
   },
   "dependencies": {
     "@tservit/core": "^0.1.2",

@@ -50,31 +50,13 @@ const runMiddleware = <T extends {}, U extends T>(
     );
 };
 
-function createHandler(
-    router: ReturnType<typeof express>
-): (
-    verb: Verbs
-) => <P extends string>(
-    pathParts: TemplateStringsArray,
-    ...params: P[]
-) => <T extends {}, U extends T>(
-    ...middleware: [Middleware<T, U>]
-) => (handle: Handler<U, P>) => void;
-function createHandler(
-    router: ReturnType<typeof express>
-): (
-    verb: Verbs
-) => <P extends string>(
-    pathParts: TemplateStringsArray,
-    ...params: P[]
-) => <T extends {}, U extends {}, V extends {}>(
-    ...middleware: [Middleware<T, U>, Middleware<U, V>]
-) => (handle: Handler<U & V, P>) => void;
 function createHandler(router: ReturnType<typeof express>) {
     return (verb: Verbs) => <P extends string>(
         pathParts: TemplateStringsArray,
         ...params: P[]
-    ) => (...middleware: any) => (handle: Handler<any, any>) => {
+    ) => (middleware: Array<Middleware<any, any>>) => (
+        handle: Handler<any, any>
+    ) => {
         router[verb](
             path(pathParts, ...params).path,
             (request, res) => {
@@ -93,17 +75,33 @@ function createHandler(router: ReturnType<typeof express>) {
     };
 }
 
-const createRoute = (router: ReturnType<typeof express>) => {
+export type CreateRoute1 = <P extends string>(
+    pathParts: TemplateStringsArray,
+    ...params: P[]
+) => <T extends {}, U extends {}, V extends {}>(
+    middleware: [Middleware<T, U>, Middleware<U, V>]
+) => (handle: Handler<U & V, P>) => void;
+
+export type CreateRoute2 = <P extends string>(
+    pathParts: TemplateStringsArray,
+    ...params: P[]
+) => <T extends {}, U extends {}, V extends {}>(
+    middleware: [Middleware<T, U>, Middleware<U, V>]
+) => (handle: Handler<U & V, P>) => void;
+
+export type CreateRoute = CreateRoute1 & CreateRoute2;
+
+const createRouter = (router: ReturnType<typeof express>) => {
     const handlerFactory = createHandler(router);
     return {
         listen: router.listen.bind(router),
         use: router.use.bind(router),
-        delete: handlerFactory(Verbs.delete),
-        get: handlerFactory(Verbs.get),
-        options: handlerFactory(Verbs.options),
-        patch: handlerFactory(Verbs.patch),
-        post: handlerFactory(Verbs.post),
-        put: handlerFactory(Verbs.put),
+        delete: handlerFactory(Verbs.delete) as CreateRoute,
+        get: handlerFactory(Verbs.get) as CreateRoute,
+        options: handlerFactory(Verbs.options) as CreateRoute,
+        patch: handlerFactory(Verbs.patch) as CreateRoute,
+        post: handlerFactory(Verbs.post) as CreateRoute,
+        put: handlerFactory(Verbs.put) as CreateRoute,
         attach: ({
             _router
         }: {
@@ -113,4 +111,4 @@ const createRoute = (router: ReturnType<typeof express>) => {
     };
 };
 
-export const createServer = (ex = express()) => createRoute(ex);
+export const createServer = (ex = express()) => createRouter(ex);

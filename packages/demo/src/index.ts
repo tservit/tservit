@@ -1,5 +1,6 @@
 import { createServer } from "@tservit/core";
 import { body } from "@tservit/middleware-body";
+import { query } from "@tservit/middleware-query";
 import { right } from "fp-ts/lib/TaskEither";
 import * as t from "io-ts";
 
@@ -11,11 +12,17 @@ const helloBody = body(
     })
 );
 
-app.post`/${"id"}`(helloBody)(
-    ({ body: { hello }, params: { id } }) => {
+const sortQuery = query(
+    t.interface({
+        sort: t.string
+    })
+);
+
+app.post`/${"id"}`([helloBody, sortQuery])(
+    ({ body: { hello }, query: { sort }, params: { id } }) => {
         return right({
             code: 200,
-            body: { success: "yaya", hello, id }
+            body: { success: "yaya", hello, id, sort }
         });
     }
 );
