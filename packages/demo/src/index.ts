@@ -5,17 +5,19 @@ import * as t from "io-ts";
 
 const app = createServer();
 
-app.post`/`([
-    body(
-        t.interface({
-            hello: t.string
-        })
-    )
-])(({ body: { hello } }) => {
-    return right({
-        code: 200,
-        body: { success: "yaya", hello }
-    });
-});
+const helloBody = body(
+    t.interface({
+        hello: t.string
+    })
+);
+
+app.post`/${"id"}`(helloBody)(
+    ({ body: { hello }, params: { id } }) => {
+        return right({
+            code: 200,
+            body: { success: "yaya", hello, id }
+        });
+    }
+);
 
 app.listen(3500, () => console.log("Listening"));

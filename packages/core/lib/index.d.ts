@@ -26,12 +26,12 @@ export declare const createServer: (ex?: import("express-serve-static-core").Exp
         (handle: any, listeningListener?: (() => void) | undefined): import("http").Server;
     };
     use: import("express-serve-static-core").ApplicationRequestHandler<import("express-serve-static-core").Express>;
-    delete: <P extends string>(pathParts: TemplateStringsArray, ...params: P[]) => <T extends {}, U extends T>(middleware: [Middleware<T, U>]) => (handle: Handler<U, P>) => void;
-    get: <P extends string>(pathParts: TemplateStringsArray, ...params: P[]) => <T extends {}, U extends T>(middleware: [Middleware<T, U>]) => (handle: Handler<U, P>) => void;
-    options: <P extends string>(pathParts: TemplateStringsArray, ...params: P[]) => <T extends {}, U extends T>(middleware: [Middleware<T, U>]) => (handle: Handler<U, P>) => void;
-    patch: <P extends string>(pathParts: TemplateStringsArray, ...params: P[]) => <T extends {}, U extends T>(middleware: [Middleware<T, U>]) => (handle: Handler<U, P>) => void;
-    post: <P extends string>(pathParts: TemplateStringsArray, ...params: P[]) => <T extends {}, U extends T>(middleware: [Middleware<T, U>]) => (handle: Handler<U, P>) => void;
-    put: <P extends string>(pathParts: TemplateStringsArray, ...params: P[]) => <T extends {}, U extends T>(middleware: [Middleware<T, U>]) => (handle: Handler<U, P>) => void;
+    delete: <P extends string>(pathParts: TemplateStringsArray, ...params: P[]) => <T extends {}, U extends T>(middleware_0: Middleware<T, U>) => (handle: Handler<U, P>) => void;
+    get: <P extends string>(pathParts: TemplateStringsArray, ...params: P[]) => <T extends {}, U extends T>(middleware_0: Middleware<T, U>) => (handle: Handler<U, P>) => void;
+    options: <P extends string>(pathParts: TemplateStringsArray, ...params: P[]) => <T extends {}, U extends T>(middleware_0: Middleware<T, U>) => (handle: Handler<U, P>) => void;
+    patch: <P extends string>(pathParts: TemplateStringsArray, ...params: P[]) => <T extends {}, U extends T>(middleware_0: Middleware<T, U>) => (handle: Handler<U, P>) => void;
+    post: <P extends string>(pathParts: TemplateStringsArray, ...params: P[]) => <T extends {}, U extends T>(middleware_0: Middleware<T, U>) => (handle: Handler<U, P>) => void;
+    put: <P extends string>(pathParts: TemplateStringsArray, ...params: P[]) => <T extends {}, U extends T>(middleware_0: Middleware<T, U>) => (handle: Handler<U, P>) => void;
     attach: ({ _router }: {
         _router: import("express-serve-static-core").Express;
     }) => import("express-serve-static-core").Express;

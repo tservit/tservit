@@ -27,16 +27,22 @@ function createHandler(router) {
         for (var _i = 1; _i < arguments.length; _i++) {
             params[_i - 1] = arguments[_i];
         }
-        return function (middleware) { return function (handle) {
-            router[verb](path_1.path.apply(void 0, tslib_1.__spreadArrays([pathParts], params)).path, function (request, res) {
-                TaskEither_1.bimap(function (err) { return res.status(500).send(err); }, function (_a) {
-                    var code = _a.code, body = _a.body;
-                    return res.status(code).send(body);
-                })(TaskEither_1.chain(handle)(runMiddleware(middleware)({
-                    request: request
-                })))();
-            });
-        }; };
+        return function () {
+            var middleware = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                middleware[_i] = arguments[_i];
+            }
+            return function (handle) {
+                router[verb](path_1.path.apply(void 0, tslib_1.__spreadArrays([pathParts], params)).path, function (request, res) {
+                    TaskEither_1.bimap(function (err) { return res.status(500).send(err); }, function (_a) {
+                        var code = _a.code, body = _a.body;
+                        return res.status(code).send(body);
+                    })(TaskEither_1.chain(handle)(runMiddleware(middleware)({
+                        request: request
+                    })))();
+                });
+            };
+        };
     }; };
 }
 var createRoute = function (router) {

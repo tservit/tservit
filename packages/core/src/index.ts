@@ -58,7 +58,7 @@ function createHandler(
     pathParts: TemplateStringsArray,
     ...params: P[]
 ) => <T extends {}, U extends T>(
-    middleware: [Middleware<T, U>]
+    ...middleware: [Middleware<T, U>]
 ) => (handle: Handler<U, P>) => void;
 function createHandler(
     router: ReturnType<typeof express>
@@ -68,13 +68,13 @@ function createHandler(
     pathParts: TemplateStringsArray,
     ...params: P[]
 ) => <T extends {}, U extends {}, V extends {}>(
-    middleware: [Middleware<T, U>, Middleware<U, V>]
+    ...middleware: [Middleware<T, U>, Middleware<U, V>]
 ) => (handle: Handler<U & V, P>) => void;
 function createHandler(router: ReturnType<typeof express>) {
     return (verb: Verbs) => <P extends string>(
         pathParts: TemplateStringsArray,
         ...params: P[]
-    ) => (middleware: any) => (handle: Handler<any, any>) => {
+    ) => (...middleware: any) => (handle: Handler<any, any>) => {
         router[verb](
             path(pathParts, ...params).path,
             (request, res) => {
