@@ -1,6 +1,6 @@
 {
   "name": "@tservit/core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "author": "Alex Young",
   "main": "lib/index.js",
@@ -32,7 +32,7 @@
     "lodash": "^4.17.15"
   },
   "gitHead": "36e1732e14e463b478ff2f651d264087a9ad70ee",
-   "publishConfig": {
+  "publishConfig": {
     "access": "public"
   }
 }
