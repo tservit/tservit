@@ -11,7 +11,7 @@ export const query = <T extends any>(
         bimap<t.Errors, HttpError, T, { query: T }>(
             errors => ({
                 code: 400,
-                msg: `Invalid query: ${PathReporter.report(left(errors)).join(
+                body: `Invalid query: ${PathReporter.report(left(errors)).join(
                     ", "
                 )}`
             }),

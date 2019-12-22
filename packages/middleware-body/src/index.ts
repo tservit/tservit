@@ -20,7 +20,7 @@ export const body = <T extends any>(
             bimapE<t.Errors, HttpError, T, { body: T }>(
                 errors => ({
                     code: 400,
-                    msg: `Invalid body: ${PathReporter.report(
+                    body: `Invalid body: ${PathReporter.report(
                         left(errors)
                     ).join(", ")}`
                 }),
@@ -29,7 +29,7 @@ export const body = <T extends any>(
         )
     )(
         bimap(
-            (err: string) => ({ code: 500, msg: String(err) }),
+            (err: string) => ({ code: 500, body: String(err) }),
             () => request.body
         )(
             taskify<IncomingMessage, ServerResponse, string, T>(
