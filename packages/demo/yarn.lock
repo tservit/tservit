@@ -2,6 +2,34 @@
 # yarn lockfile v1
 
 
+"@tservit/core@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@tservit/core/-/core-0.1.4.tgz#b34af8f32c23ad7e417da5bace5efb4d1dec69ac"
+  integrity sha512-HuAvY3bXOqB4R2tPwALfPZeBiQusFfBtALGJfuBQ8l4Hoj+a3kB1aQi3veUxnmrghH8aYjPINU5b7BjQZF8umA==
+  dependencies:
+    express "^4.17.1"
+    fp-ts "^2.3.1"
+    lodash "^4.17.15"
+
+"@tservit/middleware-body@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@tservit/middleware-body/-/middleware-body-0.1.4.tgz#d034aebf5992ab80ca6c5531845f7a08b7d9aca1"
+  integrity sha512-2hnBQ8Ok+c7TsLNzOHojmjoHctb30jzT5h3aiJoBitwLSVEOa/ngcl04oY43puZkx31Tc+N7m2vj1/45LrxJaQ==
+  dependencies:
+    "@tservit/core" "^0.1.4"
+    body-parser "^1.19.0"
+    fp-ts "^2.3.1"
+    io-ts "^2.0.1"
+
+"@tservit/middleware-query@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@tservit/middleware-query/-/middleware-query-0.1.4.tgz#d73421fd3659f4e722e9fe1f350ecd0cea57c1b2"
+  integrity sha512-UJqnkd1rN+L7Wkpzoc5kj+pbyJq8lGoWNuSmHz4bQx2NqazNOVvD+4u2QPDtgEutX0k6rE2++a3oLsJ6dfQK7A==
+  dependencies:
+    "@tservit/core" "^0.1.4"
+    fp-ts "^2.3.1"
+    io-ts "^2.0.1"
+
 "@types/body-parser@*":
   version "1.17.1"
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.17.1.tgz#18fcf61768fb5c30ccc508c21d6fd2e8b3bf7897"
@@ -122,7 +150,7 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.0.0.tgz#23c0df14f6a88077f5f986c0d167ec03c3d5537c"
   integrity sha512-Phlt0plgpIIBOGTT/ehfFnbNlfsDEiqmzE2KRXoX1bLIlir4X/MR+zSyBEkL05ffWgnRSf/DXv+WrUAVr93/ow==
 
-body-parser@1.19.0:
+body-parser@1.19.0, body-parser@^1.19.0:
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.19.0.tgz#96b2709e57c9c4e09a6fd66a8fd979844f69f08a"
   integrity sha512-dhEPs72UPbDnAQJ9ZKMNTP6ptJaionhP5cBb541nXPlW60Jepo9RV/a4fX4XWW9CuFNK22krhrj1+rgzifNCsw==
@@ -655,6 +683,11 @@ latest-version@^3.0.0:
   dependencies:
     package-json "^4.0.0"
 
+lodash@^4.17.15:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
 lowercase-keys@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/lowercase-keys/-/lowercase-keys-1.0.1.tgz#6f9e30b47084d971a7c820ff15a6c5167b74c26f"
@@ -720,9 +753,9 @@ minimatch@^3.0.4:
     brace-expansion "^1.1.7"
 
 minimist@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
-  integrity sha1-o1AIsg9BOD7sH7kU9M1d95omQoQ=
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
+  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
 
 ms@2.0.0:
   version "2.0.0"
